@@ -1,4 +1,5 @@
 require "script.rb"
+require 'green_shoes'
 
 Shoes.app do
   @script = Script.new
