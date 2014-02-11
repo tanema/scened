@@ -1,25 +1,27 @@
 require "conversation.rb"
 
 class Character
-  attr_accessor :name, :view, :conversations, :nodes
+  attr_accessor :name, :list_view, :script_view, :conversations, :nodes
   
-  def initialize
+  def initialize(list_view, script_view)
     @conversations = []
     @nodes = []
+    @list_view = list_view
+    @script_view = script_view
   end
 
-  def render(view)
+  def render
     character = self
-    @view = view
+    view = @list_view
     view.app do
       view.append do
         character_view = flow margin: 5 do
           image("images/character.png", width: 32, height: 32, margin: 3).click do
-            character.focus(character)
+            character.focus
           end
           edit_line(width: 100).change do |text|
             character.name = text
-            character.focus(character)
+            character.focus
           end
           image("images/delete_character.png", width: 20, height: 20).click do
             if confirm("Are you sure?")
@@ -28,14 +30,14 @@ class Character
             end
           end
         end
-        character.focus(character)
+        character.focus
       end
     end
   end
 
   def focus
     character = self
-    view = @view
+    view = @script_view
     view.children.each do |element|
       element.remove
     end
@@ -56,7 +58,7 @@ class Character
   def add_conversation
     @conversation = Conversation.new
     @conversations.push(@conversation)
-    @conversation.render(@view)
+    @conversation.render(@script_view)
   end
 
 end

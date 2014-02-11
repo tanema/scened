@@ -13,13 +13,13 @@ class AnswerNode < ScriptNode
     answer = self
     view.app do
       view.append do
-        answer.view = stack(left: (answer.nest_level * 20), width: -(answer.nest_level * 20))  do
-          para "answer"
+        answer.view = stack do
+          para "Answer"
           edit_box.change do |text|
             answer.text = text
           end
           flow do
-            %w(add_dialogue add_question  delete).each do |action|
+            %w(add_dialogue add_question delete).each do |action|
               action_button = stack(margin: 5, width: 42, height: 42) do
                 image "images/#{action}.png", width: 32, height: 32
               end

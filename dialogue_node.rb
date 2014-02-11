@@ -17,7 +17,7 @@ class DialogueNode < ScriptNode
     dialogue = self
     view.app do
       view.append do
-        dialogue.view = stack(left: (dialogue.nest_level * 20), width: -(dialogue.nest_level * 20))  do
+        dialogue.view = stack do
           para "Dialogue"
           list_box(items: DialogueNode::SPEAKER_TYPES).change do |option|
             dialogue.speaker = option.text()

@@ -9,9 +9,9 @@ class Script < Shoes::Stack
   end
 
   def add_character
-    @character = Character.new
+    @character = Character.new(@list_view, @script_view)
     @characters.push(@character)
-    @character.render(@script_view)
+    @character.render
   end
 
   def open
