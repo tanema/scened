@@ -1,4 +1,4 @@
-require "script"
+require "script.rb"
 
 Shoes.app do
   @script = Script.new
