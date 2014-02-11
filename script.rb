@@ -1,50 +1,17 @@
 require "character.rb"
+require "conversation.rb"
 
 class Script < Shoes::Stack
-  attr_accessor :list_view, :script_view, :characters, :focused_character
+  attr_accessor :list_view, :script_view, :characters
 
   def initialize
     @characters = []
   end
 
-  def add_character(name="")
-    script = self
-    script.list_view.app do
-      script.list_view.append do
-        character = Character.new(script.script_view)
-        character_view = flow margin: 5 do
-          image("images/character.png", width: 32, height: 32, margin: 3).click do
-            script.focused_character = character
-          end
-          character.name_field = edit_line width: 100
-          image("images/delete_character.png", width: 20, height: 20).click do
-            if confirm("Are you sure?")
-              character_view.remove
-              script.characters.delete(character)
-            end
-          end
-          character.name = name
-          script.characters.push(character)
-          script.focused_character = character
-        end
-      end
-    end
-  end
-
-  def add_dialogue
-    if @focused_character
-      @focused_character.add_dialogue
-    else
-      alert "no selected character"
-    end
-  end
-
-  def add_question
-    if @focused_character
-      @focused_character.add_question
-    else
-      alert "no selected character"
-    end
+  def add_character
+    @character = Character.new
+    @characters.push(@character)
+    @character.render(@script_view)
   end
 
   def open
@@ -59,5 +26,4 @@ class Script < Shoes::Stack
       save_as = ask_save_file 
     end
   end
-
 end

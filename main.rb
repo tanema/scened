@@ -1,12 +1,11 @@
 require "script.rb"
-require 'green_shoes'
 
 Shoes.app do
   @script = Script.new
 
   stack do
     @toolbar = flow do
-      %w(add_character add_dialogue add_question open save).each do |action|
+      %w(add_character open save).each do |action|
         action_button = stack(margin: 5, width: 42, height: 42) do
           image "images/#{action}.png", width: 32, height: 32
         end
@@ -17,7 +16,7 @@ Shoes.app do
       @script.list_view = stack(width: 200, height: slot.height - @toolbar.height) do
         border black, strokewidth: 1
       end
-      @script.script_view = flow(width: -200, height: slot.height - @toolbar.height) do
+      @script.script_view = stack(width: -200, height: slot.height - @toolbar.height) do
         border black, strokewidth: 1
       end
     end

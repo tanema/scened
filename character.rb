@@ -1,71 +1,62 @@
-require "dialogue_node.rb"
-require "question_node.rb"
+require "conversation.rb"
 
 class Character
-  attr_accessor :name_field, :script_view, :nodes
+  attr_accessor :name, :view, :conversations, :nodes
   
-  def initialize(script_view)
+  def initialize
+    @conversations = []
     @nodes = []
-    @script_view = script_view
   end
 
-  def name
-    self.name_field.text()
-  end
-
-  def name=(text)
-    self.name_field = text
-  end
-
-  def add_dialogue(parent=nil)
-    view = @script_view
+  def render(view)
     character = self
+    @view = view
     view.app do
       view.append do
-        dialogue = DialogueNode.new(parent)
-        stack(left: (dialogue.nest_level * 20), width: -(dialogue.nest_level * 20))  do
-          para "Dialogue"
-          list_box items: DialogueNode::SPEAKER_TYPES
-          edit_box
-          flow do
-            %w(add_dialogue add_question  delete).each do |action|
-              action_button = stack(margin: 5, width: 42, height: 42) do
-                image "images/#{action}.png", width: 32, height: 32
-              end
-              action_button.click{dialogue.send(action, dialogue)}
+        character_view = flow margin: 5 do
+          image("images/character.png", width: 32, height: 32, margin: 3).click do
+            character.focus(character)
+          end
+          edit_line(width: 100).change do |text|
+            character.name = text
+            character.focus(character)
+          end
+          image("images/delete_character.png", width: 20, height: 20).click do
+            if confirm("Are you sure?")
+              character_view.remove
+              script.characters.delete(character)
             end
           end
         end
-        character.nodes.push(dialogue)
+        character.focus(character)
       end
     end
   end
 
-  def add_question(parent=nil)
-    view = @script_view
+  def focus
     character = self
+    view = @view
+    view.children.each do |element|
+      element.remove
+    end
     view.app do
       view.append do
-        question = QuestionNode.new(parent)
-        stack do
-          para "Question"
-          edit_box
-          flow do
-            %w(add_answer delete).each do |action|
-              action_button = stack(margin: 5, width: 42, height: 42) do
-                image "images/#{action}.png", width: 32, height: 32
-              end
-              action_button.click{dialogue.send(action, dialogue)}
-            end
+        flow do
+          para character.name
+          stack(margin: 5, width: 42, height: 42) do
+            image "images/add_conversation.png", width: 32, height: 32
+          end.click do
+            character.add_conversation
           end
         end
-        character.nodes.push(question)
       end
     end
   end
 
-  def delete(node)
-
+  def add_conversation
+    @conversation = Conversation.new
+    @conversations.push(@conversation)
+    @conversation.render(@view)
   end
 
 end
