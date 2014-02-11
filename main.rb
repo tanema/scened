@@ -24,8 +24,8 @@ Shoes.app do
 
   def do_layout
     workspace_height = slot.height - @toolbar.height
-    #@script.list_view.style(height: workspace_height)
-    #@script.script_view.style(height: workspace_height)
+    @script.list_view.style(height: workspace_height)
+    @script.script_view.style(height: workspace_height)
   end
 
   every(0.5) do
