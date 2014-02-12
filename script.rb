@@ -9,18 +9,20 @@ class Script < Shoes::Stack
     @characters = []
   end
 
-  def add_character
+  def add_character(conversations=[])
     @characters.push(Character.new(
       script: self, 
       list_view: @list_view, 
-      script_view: @script_view
+      script_view: @script_view,
+      conversations: conversations
     ))
   end
 
   def open
     @file = ask_open_file
     @json = File.read(filename)
-    JSON.parse(json).each do |name, attributes|
+    JSON.parse(json).each do |name, conversations|
+      add_character(conversations)
     end
   end
 

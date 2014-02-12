@@ -2,10 +2,13 @@ require "conversation.rb"
 
 class Character
   attr_accessor :name, :script, :list_view, :script_view, 
-                :conversations, :nodes, :view, :name_display
+                :conversations, :view, :name_display
   
   def initialize(h={})
     @conversations = []
+    (params[:conversations] || []).each do |conversation|
+      add_conversation(conversation)
+    end
     h.each {|k,v| instance_variable_set("@#{k}",v)}
     self.render
   end
@@ -56,8 +59,11 @@ class Character
     end
   end
 
-  def add_conversation
-    @conversation = Conversation.new(parent: self)
+  def add_conversation(child_nodes=[])
+    @conversation = Conversation.new(
+      parent: self,
+      child_nodes: child_nodes
+    )
     @conversations.push(@conversation)
     @conversation.render(@script_view)
   end
