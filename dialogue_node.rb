@@ -1,5 +1,4 @@
 require "script_node.rb"
-require "question_node.rb"
 
 class DialogueNode < ScriptNode
 
@@ -18,22 +17,18 @@ class DialogueNode < ScriptNode
     view.app do
       view.append do
         dialogue.view = stack do
-          para "Dialogue"
-          list_box(items: DialogueNode::SPEAKER_TYPES).change do |option|
+          flow do
+            para "Dialogue"
+            stack(margin: 5, width: 26, height: 26) do
+              image "images/delete.png", width: 16, height: 16
+            end.click{dialogue.parent.delete(dialogue)}
+          end
+          list_box(items: SPEAKER_TYPES).change do |option|
             dialogue.speaker = option.text()
           end
           edit_box.change do |text|
             dialogue.text = text
           end
-          flow do
-            %w(add_dialogue add_question  delete).each do |action|
-              action_button = stack(margin: 5, width: 42, height: 42) do
-                image "images/#{action}.png", width: 32, height: 32
-              end
-              action_button.click{dialogue.send(action)}
-            end
-          end
-          dialogue.child_view = stack
         end
       end
     end

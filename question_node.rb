@@ -1,5 +1,4 @@
 require "script_node.rb"
-require "answer_node.rb"
 
 class QuestionNode < ScriptNode
 
@@ -13,19 +12,22 @@ class QuestionNode < ScriptNode
     view.app do
       view.append do
         question.view = stack do
-          para "Question"
+          flow do
+            para "Question"
+            stack(margin: 5, width: 26, height: 26) do
+              image "images/add_answer.png", width: 16, height: 16
+            end.click{question.add_answer}
+            stack(margin: 5, width: 26, height: 26) do
+              image "images/delete.png", width: 16, height: 16
+            end.click{question.parent.delete(question)}
+          end
           edit_box.change do |text|
             question.text = text
           end
           flow do
-            %w(add_answer delete).each do |action|
-              action_button = stack(margin: 5, width: 42, height: 42) do
-                image "images/#{action}.png", width: 32, height: 32
-              end
-              action_button.click{question.send(action)}
-            end
+            stack width: "10%"
+            question.child_view = stack width: "90%" 
           end
-          question.child_view = stack
         end
       end
     end

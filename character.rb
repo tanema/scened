@@ -1,11 +1,11 @@
 require "conversation.rb"
 
 class Character
-  attr_accessor :name, :list_view, :script_view, :conversations, :nodes
+  attr_accessor :name, :script, :list_view, :script_view, :conversations, :nodes, :view
   
-  def initialize(list_view, script_view)
+  def initialize(script, list_view, script_view)
     @conversations = []
-    @nodes = []
+    @script = script
     @list_view = list_view
     @script_view = script_view
   end
@@ -15,18 +15,18 @@ class Character
     view = @list_view
     view.app do
       view.append do
-        character_view = flow margin: 5 do
+        character.view = flow margin: 5 do
           image("images/character.png", width: 32, height: 32, margin: 3).click do
             character.focus
           end
-          edit_line(width: 100).change do |text|
-            character.name = text
+          edit_line(width: 100).change do |line|
+            character.name = line.text
             character.focus
           end
           image("images/delete_character.png", width: 20, height: 20).click do
             if confirm("Are you sure?")
-              character_view.remove
-              script.characters.delete(character)
+              character.script_view.clear
+              character.script.delete(character)
             end
           end
         end
@@ -38,9 +38,7 @@ class Character
   def focus
     character = self
     view = @script_view
-    view.children.each do |element|
-      element.remove
-    end
+    view.clear
     view.app do
       view.append do
         flow do
@@ -56,9 +54,14 @@ class Character
   end
 
   def add_conversation
-    @conversation = Conversation.new
+    @conversation = Conversation.new(parent: self)
     @conversations.push(@conversation)
     @conversation.render(@script_view)
+  end
+
+  def delete(conversation)
+    conversation.view.remove
+    @conversations.delete(conversation)
   end
 
 end

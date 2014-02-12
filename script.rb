@@ -9,7 +9,7 @@ class Script < Shoes::Stack
   end
 
   def add_character
-    @character = Character.new(@list_view, @script_view)
+    @character = Character.new(self, @list_view, @script_view)
     @characters.push(@character)
     @character.render
   end
@@ -25,5 +25,10 @@ class Script < Shoes::Stack
     unless @file 
       save_as = ask_save_file 
     end
+  end
+
+  def delete(character)
+    character.view.remove
+    @characters.delete(character)
   end
 end

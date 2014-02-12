@@ -14,19 +14,25 @@ class AnswerNode < ScriptNode
     view.app do
       view.append do
         answer.view = stack do
-          para "Answer"
+          flow do
+            para "Answer"
+            %w(add_dialogue add_question).each do |action|
+              action_button = stack(margin: 5, width: 26, height: 26) do
+                image "images/#{action}.png", width: 16, height: 16
+              end
+              action_button.click{answer.send(action)}
+            end
+            stack(margin: 5, width: 26, height: 26) do
+              image "images/delete.png", width: 16, height: 16
+            end.click{answer.parent.delete(answer)}
+          end
           edit_box.change do |text|
             answer.text = text
           end
           flow do
-            %w(add_dialogue add_question delete).each do |action|
-              action_button = stack(margin: 5, width: 42, height: 42) do
-                image "images/#{action}.png", width: 32, height: 32
-              end
-              action_button.click{answer.send(action)}
-            end
+            stack width: "10%"
+            answer.child_view = stack width: "90%" 
           end
-          answer.child_view = stack
         end
       end
     end

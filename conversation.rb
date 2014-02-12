@@ -1,45 +1,31 @@
-require "dialogue_node.rb"
-require "question_node.rb"
+require "script_node.rb"
 
-class Conversation
-  attr_accessor :root_node, :view, :child_view
-
-  def initialize
-    @nodes = []
-  end
+class Conversation < ScriptNode
 
   def render(view)
     conversation = self
     view.app do
-      conversation.view = view.append do
-        stack do
+      view.append do
+        conversation.view = stack do
           flow do
-            %w(add_dialogue add_question delete).each do |action|
+            para conversation.parent.conversations.index(conversation) + 1
+            %w(add_dialogue add_question).each do |action|
               action_button = stack(margin: 5, width: 42, height: 42) do
                 image "images/#{action}.png", width: 32, height: 32
               end
               action_button.click{conversation.send(action)}
             end
+            stack(margin: 5, width: 42, height: 42) do
+              image "images/delete.png", width: 32, height: 32
+            end.click{conversation.parent.delete(conversation)}
           end
-          conversation.child_view = stack
+          flow do
+            stack width: "10%"
+            conversation.child_view = stack width: "90%"
+          end
         end
       end
     end
   end
 
-  def add_dialogue
-    @dialogue = DialogueNode.new
-    @root_node = @dialogue
-    @dialogue.render(@child_view)
-  end
-
-  def add_question
-    @question = QuestionNode.new
-    @root_node = @question
-    @question.render(@child_view)
-  end
-
-  def delete
-    @view.remove
-  end
 end
