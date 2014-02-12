@@ -21,8 +21,8 @@ class QuestionNode < ScriptNode
               image "images/delete.png", width: 16, height: 16
             end.click{question.parent.delete(question)}
           end
-          edit_box.change do |text|
-            question.text = text
+          edit_box.change do |box|
+            question.text = box.text
           end
           flow do
             stack width: "10%"
@@ -30,6 +30,9 @@ class QuestionNode < ScriptNode
           end
         end
       end
+    end
+    @child_nodes.each do |node|
+      node.render(@child_view)
     end
   end
 

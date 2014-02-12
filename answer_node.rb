@@ -16,7 +16,7 @@ class AnswerNode < ScriptNode
         answer.view = stack do
           flow do
             para "Answer"
-            %w(add_dialogue add_question).each do |action|
+            %w(add_dialogue add_question add_event).each do |action|
               action_button = stack(margin: 5, width: 26, height: 26) do
                 image "images/#{action}.png", width: 16, height: 16
               end
@@ -26,8 +26,8 @@ class AnswerNode < ScriptNode
               image "images/delete.png", width: 16, height: 16
             end.click{answer.parent.delete(answer)}
           end
-          edit_box.change do |text|
-            answer.text = text
+          edit_box.change do |box|
+            answer.text = box.text
           end
           flow do
             stack width: "10%"
@@ -35,6 +35,9 @@ class AnswerNode < ScriptNode
           end
         end
       end
+    end
+    @child_nodes.each do |node|
+      node.render(@child_view)
     end
   end
 

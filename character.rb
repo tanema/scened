@@ -1,7 +1,8 @@
 require "conversation.rb"
 
 class Character
-  attr_accessor :name, :script, :list_view, :script_view, :conversations, :nodes, :view
+  attr_accessor :name, :script, :list_view, :script_view, 
+                :conversations, :nodes, :view, :name_display
   
   def initialize(script, list_view, script_view)
     @conversations = []
@@ -21,7 +22,7 @@ class Character
           end
           edit_line(width: 100).change do |line|
             character.name = line.text
-            character.focus
+            character.name_display.text = line.text if character.name_display
           end
           image("images/delete_character.png", width: 20, height: 20).click do
             if confirm("Are you sure?")
@@ -42,7 +43,7 @@ class Character
     view.app do
       view.append do
         flow do
-          para character.name
+          character.name_display = para character.name
           stack(margin: 5, width: 42, height: 42) do
             image "images/add_conversation.png", width: 32, height: 32
           end.click do
@@ -50,6 +51,9 @@ class Character
           end
         end
       end
+    end
+    @conversations.each do |conversation|
+      conversation.render(@script_view)
     end
   end
 
@@ -62,6 +66,10 @@ class Character
   def delete(conversation)
     conversation.view.remove
     @conversations.delete(conversation)
+  end
+
+  def to_json(*a)
+    JSON.generate(@conversations)
   end
 
 end

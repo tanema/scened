@@ -9,7 +9,7 @@ class Conversation < ScriptNode
         conversation.view = stack do
           flow do
             para conversation.parent.conversations.index(conversation) + 1
-            %w(add_dialogue add_question).each do |action|
+            %w(add_dialogue add_question add_event).each do |action|
               action_button = stack(margin: 5, width: 42, height: 42) do
                 image "images/#{action}.png", width: 32, height: 32
               end
@@ -26,6 +26,13 @@ class Conversation < ScriptNode
         end
       end
     end
+    @child_nodes.each do |node|
+      node.render(@child_view)
+    end
+  end
+
+  def to_json(*a)
+    JSON.generate(@child_nodes)
   end
 
 end

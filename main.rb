@@ -1,5 +1,9 @@
 require "script.rb"
 
+Shoes.setup do
+  gem 'json'
+end
+
 Shoes.app do
   @script = Script.new
 

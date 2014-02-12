@@ -1,5 +1,6 @@
 require "character.rb"
 require "conversation.rb"
+require "json"
 
 class Script < Shoes::Stack
   attr_accessor :list_view, :script_view, :characters
@@ -15,15 +16,17 @@ class Script < Shoes::Stack
   end
 
   def open
-   filename = ask_open_file
-   Shoes.app do
-     File.read(filename)
-   end
+    @file = ask_open_file
+    @json = File.read(filename)
+    obj = JSON.parse(json)
   end
 
   def save
     unless @file 
-      save_as = ask_save_file 
+      @file = ask_save_file 
+    end
+    File.open(@file, "w") do |f|
+      f.write(self.to_json)
     end
   end
 
@@ -31,4 +34,9 @@ class Script < Shoes::Stack
     character.view.remove
     @characters.delete(character)
   end
+
+  def to_json
+    JSON.generate(Hash[@characters.map{|c| [c.name, c]}])
+  end
+
 end

@@ -1,14 +1,9 @@
 require "script_node.rb"
 
-class DialogueNode < ScriptNode
-
-  SPEAKER_TYPES = [:character, :player]
-
-  attr_accessor :speaker
+class EventNode < ScriptNode
 
   def initialize(options={})
-    @speaker = SPEAKER_TYPES[0] 
-    options[:type] = :dialogue
+    options[:type] = :event
     super(options)
   end
 
@@ -18,16 +13,13 @@ class DialogueNode < ScriptNode
       view.append do
         dialogue.view = stack do
           flow do
-            para "Dialogue"
+            para "Event"
             stack(margin: 5, width: 26, height: 26) do
               image "images/delete.png", width: 16, height: 16
             end.click{dialogue.parent.delete(dialogue)}
           end
-          list_box(items: SPEAKER_TYPES, choose: SPEAKER_TYPES[0]).change do |option|
-            dialogue.speaker = option.text()
-          end
-          edit_box.change do |box|
-            dialogue.text = box.text
+          edit_line.change do |text|
+            dialogue.text = text
           end
         end
       end
@@ -35,3 +27,4 @@ class DialogueNode < ScriptNode
   end
 
 end
+
