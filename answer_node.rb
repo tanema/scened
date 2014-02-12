@@ -16,7 +16,7 @@ class AnswerNode < ScriptNode
         answer.view = stack do
           flow do
             para "Answer"
-            %w(add_dialogue add_question add_event).each do |action|
+            %w(add_dialogue add_question add_event add_camera).each do |action|
               action_button = stack(margin: 5, width: 26, height: 26) do
                 image "images/#{action}.png", width: 16, height: 16
               end

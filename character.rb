@@ -4,11 +4,10 @@ class Character
   attr_accessor :name, :script, :list_view, :script_view, 
                 :conversations, :nodes, :view, :name_display
   
-  def initialize(script, list_view, script_view)
+  def initialize(h={})
     @conversations = []
-    @script = script
-    @list_view = list_view
-    @script_view = script_view
+    h.each {|k,v| instance_variable_set("@#{k}",v)}
+    self.render
   end
 
   def render

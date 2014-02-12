@@ -10,15 +10,18 @@ class Script < Shoes::Stack
   end
 
   def add_character
-    @character = Character.new(self, @list_view, @script_view)
-    @characters.push(@character)
-    @character.render
+    @characters.push(Character.new(
+      script: self, 
+      list_view: @list_view, 
+      script_view: @script_view
+    ))
   end
 
   def open
     @file = ask_open_file
     @json = File.read(filename)
-    obj = JSON.parse(json)
+    JSON.parse(json).each do |name, attributes|
+    end
   end
 
   def save
