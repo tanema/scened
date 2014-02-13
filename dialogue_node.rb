@@ -23,10 +23,10 @@ class DialogueNode < ScriptNode
               image "images/delete.png", width: 16, height: 16
             end.click{dialogue.parent.delete(dialogue)}
           end
-          list_box(items: SPEAKER_TYPES, choose: @speaker).change do |option|
+          list_box(items: SPEAKER_TYPES, choose: dialogue.speaker).change do |option|
             dialogue.speaker = option.text()
           end
-          edit_box.change do |box|
+          edit_box(text: dialogue.text).change do |box|
             dialogue.text = box.text
           end
         end

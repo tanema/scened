@@ -21,7 +21,7 @@ class QuestionNode < ScriptNode
               image "images/delete.png", width: 16, height: 16
             end.click{question.parent.delete(question)}
           end
-          edit_box.change do |box|
+          edit_box(text: question.text).change do |box|
             question.text = box.text
           end
           flow do

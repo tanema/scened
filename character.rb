@@ -6,10 +6,11 @@ class Character
   
   def initialize(h={})
     @conversations = []
-    (params[:conversations] || []).each do |conversation|
+    inital_convos = h.delete(:conversations)
+    h.each {|k,v| instance_variable_set("@#{k}",v)}
+    (inital_convos || []).each do |conversation|
       add_conversation(conversation)
     end
-    h.each {|k,v| instance_variable_set("@#{k}",v)}
     self.render
   end
 
@@ -22,7 +23,8 @@ class Character
           image("images/character.png", width: 32, height: 32, margin: 3).click do
             character.focus
           end
-          edit_line(width: 100).change do |line|
+          debug character.name
+          edit_line(width: 100, text: character.name).change do |line|
             character.name = line.text
             character.name_display.text = line.text if character.name_display
           end

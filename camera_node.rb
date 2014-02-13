@@ -3,12 +3,12 @@ require "script_node.rb"
 class CameraNode < ScriptNode
   
   ACTION = [:pan, :jump, :focus]
-  TARGETS = [:character, :player]
+  TARGETS = [:character, :player, :position]
 
-  attr_accessor :action, :target
+  attr_accessor :action, :target, :x, :y
 
   def initialize(options={})
-    @acion = SPEAKER_TYPES[0] 
+    @action = ACTION[0] 
     @target = TARGETS[0] 
     options[:type] = :camera
     super(options)
@@ -25,14 +25,17 @@ class CameraNode < ScriptNode
               image "images/delete.png", width: 16, height: 16
             end.click{camera.parent.delete(camera)}
           end
-          list_box(items: ACTION, choose: @action).change do |option|
-            dialogue.speaker = option.text()
+          list_box(items: ACTION, choose: camera.action).change do |option|
+            dialogue.action = option.text()
           end
-          list_box(items: TARGETS, choose: @target).change do |option|
-            dialogue.speaker = option.text()
+          list_box(items: TARGETS, choose: camera.target).change do |option|
+            dialogue.target = option.text()
           end
-          edit_line.change do |text|
-            camera.text = text
+          edit_line(text: camera.x).change do |text|
+            camera.x = text
+          end
+          edit_line(text: camera.y).change do |text|
+            camera.y = text
           end
         end
       end

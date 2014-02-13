@@ -6,8 +6,25 @@ class ScriptNode
     require "question_node.rb"
     require "answer_node.rb"
     require "event_node.rb"
+    require "camera_node.rb"
     @child_nodes = []
     h.each {|k,v| instance_variable_set("@#{k}",v)}
+    @child_nodes = @child_nodes.map do |node|
+      case node["type"]
+      when "dialogue"
+        DialogueNode.new node.merge(parent: self)
+      when "question"
+        QuestionNode.new node.merge(parent: self)
+      when "answer"
+        AnswerNode.new node.merge(parent: self)
+      when "event"
+        EventNode.new node.merge(parent: self)
+      when "camera"
+        CameraNode.new node.merge(parent: self)
+      else
+        p node[:type]
+      end
+    end
   end
 
   def add_dialogue
@@ -32,6 +49,12 @@ class ScriptNode
     @event = EventNode.new(parent: self)
     @child_nodes.push(@event)
     @event.render(@child_view)
+  end
+
+  def add_camera
+    @camera = CameraNode.new(parent: self)
+    @child_nodes.push(@camera)
+    @camera.render(@child_view)
   end
 
   def delete(node)
