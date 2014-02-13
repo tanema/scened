@@ -26,9 +26,7 @@ class Conversation < ScriptNode
         end
       end
     end
-    @child_nodes.each do |node|
-      node.render(@child_view)
-    end
+    render_children
   end
 
   def to_json(*a)

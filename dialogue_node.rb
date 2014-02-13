@@ -19,9 +19,12 @@ class DialogueNode < ScriptNode
         dialogue.view = stack do
           flow do
             para "Dialogue"
-            stack(margin: 5, width: 26, height: 26) do
-              image "images/delete.png", width: 16, height: 16
-            end.click{dialogue.parent.delete(dialogue)}
+            %w(add_dialogue add_question add_event add_camera delete).each do |action|
+              action_button = stack(margin: 5, width: 26, height: 26) do
+                image "images/#{action}.png", width: 16, height: 16
+              end
+              action_button.click{dialogue.parent.send(action)}
+            end
           end
           list_box(items: SPEAKER_TYPES, choose: dialogue.speaker.to_sym).change do |option|
             dialogue.speaker = option.text()

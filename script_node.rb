@@ -22,6 +22,13 @@ class ScriptNode
     end
   end
 
+  def render_children
+    @child_view.clear
+    @child_nodes.each do |node|
+      node.render(@child_view)
+    end
+  end
+
   def delete(node)
     node.view.remove
     @child_nodes.delete(node)
