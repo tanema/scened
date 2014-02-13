@@ -10,51 +10,16 @@ class ScriptNode
     @child_nodes = []
     h.each {|k,v| instance_variable_set("@#{k}",v)}
     @child_nodes = @child_nodes.map do |node|
-      case node["type"]
-      when "dialogue"
-        DialogueNode.new node.merge(parent: self)
-      when "question"
-        QuestionNode.new node.merge(parent: self)
-      when "answer"
-        AnswerNode.new node.merge(parent: self)
-      when "event"
-        EventNode.new node.merge(parent: self)
-      when "camera"
-        CameraNode.new node.merge(parent: self)
-      else
-        p node[:type]
-      end
+      Object.const_get("#{node["type"].capitalize}Node").new node.merge(parent: self) 
     end
   end
 
-  def add_dialogue
-    @dialogue = DialogueNode.new(parent: self)
-    @child_nodes.push(@dialogue)
-    @dialogue.render(@child_view)
-  end
-
-  def add_question
-    @question = QuestionNode.new(parent: self)
-    @child_nodes.push(@question)
-    @question.render(@child_view)
-  end
-
-  def add_answer
-    @answer = AnswerNode.new(parent: self)
-    @child_nodes.push(@answer)
-    @answer.render(@child_view)
-  end
-
-  def add_event
-    @event = EventNode.new(parent: self)
-    @child_nodes.push(@event)
-    @event.render(@child_view)
-  end
-
-  def add_camera
-    @camera = CameraNode.new(parent: self)
-    @child_nodes.push(@camera)
-    @camera.render(@child_view)
+  %w(dialogue question answer event camera).each do |node|
+    define_method "add_#{node}" do
+      new_node = Object.const_get("#{node.capitalize}Node").new(parent: self)
+      @child_nodes.push(new_node)
+      new_node.render(@child_view)
+    end
   end
 
   def delete(node)
@@ -63,12 +28,12 @@ class ScriptNode
   end
 
   def to_json(*a)
-    json_data = {
-      type: @type,
-      text: @text || ""
-    }
-    json_data[:child_nodes] = @child_nodes if @child_nodes.any?
-    json_data[:speaker] = @speaker if @speaker
+    json_data = {}
+    self.instance_variables.select do |var|
+      ![:@parent, :@child_view, :@view].include?(var)
+    end.each do |var|
+      json_data[var.to_s.delete "@"] = self.instance_variable_get var
+    end
     JSON.generate(json_data)
   end
 

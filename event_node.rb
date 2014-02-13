@@ -18,8 +18,8 @@ class EventNode < ScriptNode
               image "images/delete.png", width: 16, height: 16
             end.click{event.parent.delete(event)}
           end
-          edit_line(text: event.text).change do |text|
-            event.text = text
+          edit_line(text: event.text).change do |line|
+            event.text = line.text
           end
         end
       end
