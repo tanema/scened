@@ -1,0 +1,40 @@
+# The app's full name, intended for humans. This will be the name of the thing
+# you double-click.
+name: Scened
+
+# Files to ignore when bundling the app. Should be an array.
+ignore:
+  - 'vendor'
+  #- 'lib'
+  - 'static'
+  - '*.app'
+  - 'spec'
+
+# How to run the app
+#run: bin/hello_from_warbler
+
+# Installed gems to bundle with the app
+gems:
+  - 'json'
+
+# -----------------------------------------------------------------------------
+# The following options are only available for Shoes 3. They won't work (yet)
+# in Shoes 4.
+# -----------------------------------------------------------------------------
+
+# The app's version number
+version: 0.0.1
+
+# The name of this release
+release: scened
+
+# App icons for various platforms
+icons:
+  osx: static/Shoes.icns
+  gtk: path/to/app.png
+  win32: path/to/App.ico
+
+# Artwork for a DMG
+dmg:
+  ds_store: path/to/.DS_Store
+  background: path/to/background.png
