@@ -1,7 +1,7 @@
+$LOAD_PATH << './lib'
 require "script.rb"
 
 Shoes.setup do
-  gem "json"
 end          
 
 Shoes.app title: "Scened", width: 1000, height: 700 do
