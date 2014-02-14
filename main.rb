@@ -1,7 +1,8 @@
 require "script.rb"
 
 Shoes.setup do
-end
+  gem "json"
+end          
 
 Shoes.app title: "Scened", width: 1000, height: 700 do
   @script = Script.new
