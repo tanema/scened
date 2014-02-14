@@ -19,14 +19,16 @@ class AnswerNode < ScriptNode
           stack margin: 5 do
             flow do
               para "Answer"
-              %w(add_dialogue add_question add_event add_camera).each do |action|
-                action_button = stack(margin: 5, width: 26, height: 26) do
-                  image "images/#{action}.png", width: 16, height: 16
-                end.click{answer.send(action, nil)}
+              flow width: 130, right: 0 do
+                %w(add_dialogue add_question add_event add_camera).each do |action|
+                  action_button = stack(margin: 5, width: 26, height: 26) do
+                    image "images/#{action}.png", width: 16, height: 16
+                  end.click{answer.send(action, nil)}
+                end
+                stack(margin: 5, width: 26, height: 26) do
+                  image "images/delete.png", width: 16, height: 16
+                end.click{answer.parent.delete(answer)}
               end
-              stack(margin: 5, width: 26, height: 26) do
-                image "images/delete.png", width: 16, height: 16
-              end.click{answer.parent.delete(answer)}
             end
             edit_box(text: answer.text, width: "100%", height: 35).change do |box|
               answer.text = box.text
@@ -34,8 +36,8 @@ class AnswerNode < ScriptNode
           end
         end
         flow do
-          stack width: "10%"
-          answer.child_view = stack width: "90%" 
+          stack width: "5%"
+          answer.child_view = stack width: "95%" 
         end
       end
     end

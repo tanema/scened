@@ -17,10 +17,12 @@ class EventNode < ScriptNode
           stack margin: 5 do
             flow do
               para "Event"
-              %w(add_dialogue add_question add_event add_camera delete).each do |action|
-                stack(margin: 5, width: 26, height: 26) do
-                  image "images/#{action}.png", width: 16, height: 16
-                end.click{event.parent.send(action, event)}
+              flow width: 130, right: 0 do
+                %w(add_dialogue add_question add_event add_camera delete).each do |action|
+                  stack(margin: 5, width: 26, height: 26) do
+                    image "images/#{action}.png", width: 16, height: 16
+                  end.click{event.parent.send(action, event)}
+                end
               end
             end
             edit_line(text: event.text, width: "100%", height: 35).change do |line|

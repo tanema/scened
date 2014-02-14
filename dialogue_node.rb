@@ -22,10 +22,12 @@ class DialogueNode < ScriptNode
           stack margin: 5 do
             flow do
               para "Dialogue"
-              %w(add_dialogue add_question add_event add_camera delete).each do |action|
-                action_button = stack(margin: 5, width: 26, height: 26) do
-                  image "images/#{action}.png", width: 16, height: 16
-                end.click{dialogue.parent.send(action, dialogue)}
+              flow width: 130, right: 0 do
+                %w(add_dialogue add_question add_event add_camera delete).each do |action|
+                  action_button = stack(margin: 5, width: 26, height: 26) do
+                    image "images/#{action}.png", width: 16, height: 16
+                  end.click{dialogue.parent.send(action, dialogue)}
+                end
               end
             end
             flow do
