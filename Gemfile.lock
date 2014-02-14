@@ -2,8 +2,10 @@ GEM
   remote: http://rubygems.org/
   specs:
     json (1.8.1)
+    json (1.8.1-java)
 
 PLATFORMS
+  java
   ruby
 
 DEPENDENCIES

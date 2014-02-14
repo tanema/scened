@@ -1,9 +1,6 @@
 $LOAD_PATH << './lib'
 require "script.rb"
 
-Shoes.setup do
-end          
-
 Shoes.app title: "Scened", width: 1000, height: 700 do
   @script = Script.new
   background white
@@ -16,7 +13,7 @@ Shoes.app title: "Scened", width: 1000, height: 700 do
             action_button = stack(margin: 5, width: 42, height: 42) do
               image "images/#{action}.png", width: 32, height: 32
             end
-            action_button.click{@script.send(action)}
+            action_button.click{ @script.send(action) }
           end
           @add_conv = stack(margin: 5, width: 42, height: 42) do
             image "images/add_conversation.png", width: 32, height: 32
