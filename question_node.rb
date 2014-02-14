@@ -11,23 +11,27 @@ class QuestionNode < ScriptNode
     question = self
     view.app do
       view.append do
-        question.view = stack do
-          flow do
-            para "Question"
-            stack(margin: 5, width: 26, height: 26) do
-              image "images/add_answer.png", width: 16, height: 16
-            end.click{question.add_answer}
-            stack(margin: 5, width: 26, height: 26) do
-              image "images/delete.png", width: 16, height: 16
-            end.click{question.parent.delete(question)}
+        question.view = stack margin: 5 do
+          background "#FC4C87", curve: 5
+          border "#EB4D82", curve: 5
+          stack margin: 5 do
+            flow do
+              para "Question"
+              stack(margin: 5, width: 26, height: 26) do
+                image "images/add_answer.png", width: 16, height: 16
+              end.click{question.add_answer(nil)}
+              stack(margin: 5, width: 26, height: 26) do
+                image "images/delete.png", width: 16, height: 16
+              end.click{question.parent.delete(question)}
+            end
+            edit_box(text: question.text, width: "100%", height: 35).change do |box|
+              question.text = box.text
+            end
           end
-          edit_box(text: question.text).change do |box|
-            question.text = box.text
-          end
-          flow do
-            stack width: "10%"
-            question.child_view = stack width: "90%" 
-          end
+        end
+        flow do
+          stack width: "10%"
+          question.child_view = stack width: "90%" 
         end
       end
     end

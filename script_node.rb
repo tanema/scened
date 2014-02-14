@@ -15,10 +15,10 @@ class ScriptNode
   end
 
   %w(dialogue question answer event camera).each do |node|
-    define_method "add_#{node}" do
+    define_method "add_#{node}" do |after|
       new_node = Object.const_get("#{node.capitalize}Node").new(parent: self)
-      @child_nodes.push(new_node)
-      new_node.render(@child_view)
+      @child_nodes.insert((@child_nodes.index(after) || -1)+1, new_node)
+      render_children
     end
   end
 
@@ -32,6 +32,7 @@ class ScriptNode
   def delete(node)
     node.view.remove
     @child_nodes.delete(node)
+    render_children
   end
 
   def to_json(*a)

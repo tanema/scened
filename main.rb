@@ -3,7 +3,7 @@ require "script.rb"
 Shoes.setup do
 end
 
-Shoes.app do
+Shoes.app title: "Scened", width: 1000, height: 700 do
   @script = Script.new
 
   stack do

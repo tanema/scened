@@ -2,7 +2,7 @@ require "script_node.rb"
 
 class DialogueNode < ScriptNode
 
-  SPEAKER_TYPES = [:character, :player]
+  SPEAKER_TYPES = [:character, :player, :narrator]
 
   attr_accessor :speaker
 
@@ -16,21 +16,27 @@ class DialogueNode < ScriptNode
     dialogue = self
     view.app do
       view.append do
-        dialogue.view = stack do
-          flow do
-            para "Dialogue"
-            %w(add_dialogue add_question add_event add_camera delete).each do |action|
-              action_button = stack(margin: 5, width: 26, height: 26) do
-                image "images/#{action}.png", width: 16, height: 16
+        dialogue.view = stack margin: 5 do
+          background "#5CDCFF", curve: 5
+          border "#4FC3E3", curve: 5
+          stack margin: 5 do
+            flow do
+              para "Dialogue"
+              %w(add_dialogue add_question add_event add_camera delete).each do |action|
+                action_button = stack(margin: 5, width: 26, height: 26) do
+                  image "images/#{action}.png", width: 16, height: 16
+                end.click{dialogue.parent.send(action, dialogue)}
               end
-              action_button.click{dialogue.parent.send(action)}
             end
-          end
-          list_box(items: SPEAKER_TYPES, choose: dialogue.speaker.to_sym).change do |option|
-            dialogue.speaker = option.text()
-          end
-          edit_box(text: dialogue.text).change do |box|
-            dialogue.text = box.text
+            flow do
+              para "Speaker  "
+              list_box(items: SPEAKER_TYPES, choose: dialogue.speaker.to_sym).change do |option|
+                dialogue.speaker = option.text()
+              end
+            end
+            edit_box(text: dialogue.text, width: "100%", height: 35).change do |box|
+              dialogue.text = box.text
+            end
           end
         end
       end

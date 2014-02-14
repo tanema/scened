@@ -13,7 +13,7 @@ class Conversation < ScriptNode
               action_button = stack(margin: 5, width: 42, height: 42) do
                 image "images/#{action}.png", width: 32, height: 32
               end
-              action_button.click{conversation.send(action)}
+              action_button.click{conversation.send(action, nil)}
             end
             stack(margin: 5, width: 42, height: 42) do
               image "images/delete.png", width: 32, height: 32
