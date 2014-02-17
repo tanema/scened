@@ -13,7 +13,7 @@ class AnswerNode < ScriptNode
     answer = self
     view.app do
       view.append do
-        answer.view = stack margin: 5 do
+        answer.view = stack margin: 2 do
           background "#00F757", curve: 5
           border "#00CC47", curve: 5
           stack margin: 5 do

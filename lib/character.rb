@@ -44,6 +44,7 @@ class Character
 
   def focus(focus_conv=nil)
     character = self
+    focus_conv = focus_conv || @conversations[0]
     @script_view.clear
     @script_view.app do
       @focused_character = character
@@ -54,17 +55,22 @@ class Character
             flow(width: 120, margin_right: 2, height: 25) do
               if focus_conv and focus_conv == conversation
                 background "#EDEDED"
+                border "#D3D3D3"
               else
                 background "#D3D3D3"
               end
               flow do
-                para (index + 1).to_s, margin_left: 12
+                stack(width: -26) do
+                  para (index + 1).to_s, margin_left: 12
+                end.click do
+                  character.focus(conversation)
+                end
                 stack(margin: 5, width: 26, height: 26, right: 0) do
                   image "images/delete.png", width: 16, height: 16
-                end.click{character.delete(conversation)}
+                end.click do
+                  character.delete(conversation)
+                end
               end
-            end.click do
-              character.focus(conversation)
             end
           end
         end

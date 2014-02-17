@@ -11,7 +11,7 @@ class QuestionNode < ScriptNode
     question = self
     view.app do
       view.append do
-        question.view = stack margin: 5 do
+        question.view = stack margin: 2 do
           background "#FC4C87", curve: 5
           border "#EB4D82", curve: 5
           stack margin: 5 do

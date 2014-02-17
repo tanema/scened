@@ -11,7 +11,7 @@ class EventNode < ScriptNode
     event = self
     view.app do
       view.append do
-        event.view = stack margin: 5 do
+        event.view = stack margin: 2 do
           background "#E5FF00", curve: 5
           border "#D8F000", curve: 5
           stack margin: 5 do

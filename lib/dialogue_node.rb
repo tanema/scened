@@ -16,7 +16,7 @@ class DialogueNode < ScriptNode
     dialogue = self
     view.app do
       view.append do
-        dialogue.view = stack margin: 5 do
+        dialogue.view = stack margin: 2 do
           background "#5CDCFF", curve: 5
           border "#4FC3E3", curve: 5
           stack margin: 5 do

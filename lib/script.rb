@@ -18,14 +18,27 @@ class Script < Shoes::Stack
       conversations: conversations
     )
     @characters.push(@character)
-    @character.add_conversation
+    unless conversations.any?
+      @character.add_conversation
+    end
   end
 
   def open
+    if (@characters.any? and confirm("You will lose all unsaved data, are you sure you want to open a file?")) || @characters.empty?
+      self.import
+    end
+  end
+
+  def import
     @file = ask_open_file
-    @json = File.read(@file)
-    JSON.parse(@json).each do |name, conversations|
-      add_character(name, conversations)
+    if @file
+      @characters.each do |character|
+        self.delete(character)
+      end
+      @json = File.read(@file)
+      JSON.parse(@json).each do |name, conversations|
+        add_character(name, conversations)
+      end
     end
   end
 
@@ -33,8 +46,10 @@ class Script < Shoes::Stack
     unless @file 
       @file = ask_save_file 
     end
-    File.open(@file, "w") do |f|
-      f.write(self.to_json)
+    if @file 
+      File.open(@file, "w") do |f|
+        f.write(self.to_json)
+      end
     end
   end
 

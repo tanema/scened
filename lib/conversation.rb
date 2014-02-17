@@ -6,9 +6,9 @@ class Conversation < ScriptNode
     conversation = self
     view.app do
       view.append do
-        conversation.view = stack margin_bottom: 5 do
-          background "#FFBC40", curve: 5
-          border "#DBA237", curve: 5
+        conversation.view = stack margin_bottom: 2 do
+          background "#EDEDED"
+          border "#D3D3D3"
           stack margin: 5 do
             flow do
               flow width: 130, right: 0 do

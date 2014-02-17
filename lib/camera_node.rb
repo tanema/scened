@@ -18,7 +18,7 @@ class CameraNode < ScriptNode
     camera = self
     view.app do
       view.append do
-        camera.view = stack margin: 5 do
+        camera.view = stack margin: 2 do
           background "#999999", curve: 5
           border "#707070", curve: 5
           stack margin: 5 do
@@ -35,7 +35,7 @@ class CameraNode < ScriptNode
             flow do
               para "Action  "
               list_box(items: ACTION, choose: camera.action.to_sym).change do |option|
-                dialogue.action = option.text()
+                camera.action = option.text()
               end
               para "X  "
               edit_line(text: camera.x, width: "20%").change do |text|
@@ -45,7 +45,7 @@ class CameraNode < ScriptNode
             flow do
               para "Target  "
               list_box(items: TARGETS, choose: camera.target.to_sym).change do |option|
-                dialogue.target = option.text()
+                camera.target = option.text()
               end
               para "Y  "
               edit_line(text: camera.y, width: "20%").change do |text|
