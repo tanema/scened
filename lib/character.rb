@@ -19,9 +19,9 @@ class Character
     view = @list_view
     view.app do
       view.append do
-        stack margin: 5 do
+        character.view = stack margin: 5 do
           border "#D9D9D9", curve: 3
-          character.view = flow margin: 5 do
+          flow margin: 5 do
             image("images/character.png", width: 32, height: 32, margin: 3, margin_right: 5).click do
               character.focus
             end
@@ -42,27 +42,47 @@ class Character
     end
   end
 
-  def focus
+  def focus(focus_conv=nil)
     character = self
     @script_view.clear
     @script_view.app do
       @focused_character = character
       @script.script_view.append do
         @name_display = tagline character.name, align: 'center'
+        flow width: "100%" do
+          character.conversations.each_with_index do |conversation, index|
+            flow(width: 120, margin_right: 2, height: 25) do
+              if focus_conv and focus_conv == conversation
+                background "#EDEDED"
+              else
+                background "#D3D3D3"
+              end
+              flow do
+                para (index + 1).to_s, margin_left: 12
+                stack(margin: 5, width: 26, height: 26, right: 0) do
+                  image "images/delete.png", width: 16, height: 16
+                end.click{character.delete(conversation)}
+              end
+            end.click do
+              character.focus(conversation)
+            end
+          end
+        end
+        @conv_view = stack
+        if focus_conv
+          focus_conv.render(@conv_view)
+        end
       end
-    end
-    @conversations.each do |conversation|
-      conversation.render(@script_view)
     end
   end
 
   def add_conversation(child_nodes=[])
-    @conversation = Conversation.new(
+    conversation = Conversation.new(
       parent: self,
       child_nodes: child_nodes
     )
-    @conversations.push(@conversation)
-    @conversation.render(@script_view)
+    @conversations.push(conversation)
+    self.focus(conversation)
   end
 
   def delete(conversation)

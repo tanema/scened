@@ -10,13 +10,15 @@ class Script < Shoes::Stack
   end
 
   def add_character(name="", conversations=[])
-    @characters.push(Character.new(
+    @character = Character.new(
       script: self, 
       list_view: @list_view, 
       script_view: @script_view,
       name: name,
       conversations: conversations
-    ))
+    )
+    @characters.push(@character)
+    @character.add_conversation
   end
 
   def open
